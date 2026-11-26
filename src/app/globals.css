@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), var(--font-body), sans-serif;
+  --font-script: var(--font-script-face), cursive;
+
+  --color-ink-950: #07060f;
+  --color-ink-900: #0d0b1a;
+  --color-ink-800: #151227;
+
+  /* Genshin: đỏ cam / vàng (theo bảng giá Genshin) */
+  --color-gi-400: #ff8a4c;
+  --color-gi-500: #ff6a2b;
+  --color-gi-gold: #f5c86b;
+  /* Star Rail: hồng tím (theo bảng giá HSR) */
+  --color-hsr-400: #f472d0;
+  --color-hsr-500: #d946b0;
+  /* Endgame: xanh dương */
+  --color-azure-400: #60a5fa;
+  --color-azure-500: #3b6cf6;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-ink-950 font-sans text-slate-200 antialiased;
+    background-image:
+      radial-gradient(60rem 40rem at 10% -10%, rgb(124 58 237 / 0.22), transparent 60%),
+      radial-gradient(50rem 35rem at 100% 10%, rgb(59 108 246 / 0.18), transparent 60%),
+      radial-gradient(45rem 35rem at 50% 110%, rgb(217 70 176 / 0.14), transparent 60%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: rgb(217 70 176 / 0.45);
+    color: white;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(139 92 246 / 0.35);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  /* Khối kính mờ với viền sáng nhẹ */
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.06),
+      0 10px 40px -12px rgb(0 0 0 / 0.6);
+  }
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgb(167 139 250 / 0.7), rgb(96 165 250 / 0.2) 40%, rgb(244 114 208 / 0.6));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, #c4b5fd, #60a5fa, #f472d0, #f5c86b, #c4b5fd);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: var(--animate-shimmer);
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-white/10 bg-ink-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 transition outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/25;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-fuchsia-900/40 transition hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-white/25 hover:bg-white/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .section-title {
+    @apply font-display text-3xl font-bold tracking-tight text-white sm:text-4xl;
+  }
+}
+
+.toast-in {
+  animation: toast-in 0.25s ease-out;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+
+.drawer-in {
+  animation: drawer-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@keyframes drawer-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Hiệu ứng sao lấp lánh nền (giống các ô sáng trong ảnh bảng giá) */
+.starfield {
+  background-image:
+    radial-gradient(1.5px 1.5px at 20px 30px, rgb(255 255 255 / 0.5), transparent),
+    radial-gradient(1px 1px at 90px 120px, rgb(255 255 255 / 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px, rgb(196 181 253 / 0.5), transparent),
+    radial-gradient(1px 1px at 230px 170px, rgb(255 255 255 / 0.3), transparent);
+  background-size: 260px 220px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
